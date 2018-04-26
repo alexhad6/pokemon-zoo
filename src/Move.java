@@ -40,4 +40,8 @@ public final class Move {
 	public int getCategory() {
 		return category;
 	}
+	
+	public double getAccuracy() {
+		return accuracy;
+	}
 }

@@ -1,46 +1,35 @@
-
 import java.util.Scanner;
 
 public abstract class Pokemon {
 	
-	//static data (can change with evolution or rename)
 	private String name;
 	private String nickname;
 	private int height;
 	private double weight;
-	private Type type1;
-	private Type type2;
+	private Type type;
 	private final Nature nature;
-	
-	//variable data
 	private int level;
-	private double experience;
-
+	
 	//statistics
 	private int[] baseStats;
 	private final int[] IVs;
 	private final int[] EVs;
 	private int[] stats;
 	private int currentHP;
-
+	
 	//moves
 	private Move move1;
 	private Move move2;
-
+	
 	//everything
-	public Pokemon(final String name, final String nickname, final int height, final double weight, final Type type1, final Type type2, final int level, final double experience, final int[] baseStats, final Move move1, final Move move2) {
-		//static data
+	public Pokemon(final String name, final String nickname, final int height, final double weight, final Type type, final int level, final int[] baseStats, final Move move1, final Move move2) {
 		this.name = name;
 		this.nickname = nickname;
 		this.height = height;
 		this.weight = weight;
-		this.type1 = type1;
-		this.type2 = type2;
+		this.type = type;
 		this.nature = Const.NATURES[Const.rand.nextInt(20)];
-
-		//variable data
 		this.level = level;
-		this.experience = experience;
 
 		//statistics
 		this.baseStats = baseStats;
@@ -56,9 +45,9 @@ public abstract class Pokemon {
 		this.move1 = move1;
 		this.move2 = move2;
 	}
-
-	public final void feed() {
-
+	
+	public final String getName() {
+		return name;
 	}
 	
 	public final String getNickname() {
@@ -68,9 +57,14 @@ public abstract class Pokemon {
 	public final int getLevel() {
 		return level;
 	}
+	
+	public final void rename(String newName) {
+		System.out.println(nickname + " is now named " + newName + "!");
+		nickname = newName;
+	}
 
 	protected final void displayTotalStats() {
-		System.out.println("HP:\t " + stats[Const.HP]);
+		System.out.println("HP:\t " + currentHP + " / " + stats[Const.HP]);
 		System.out.println("Attack:\t " + stats[Const.ATK]);
 		System.out.println("Defense:\t " + stats[Const.DEF]);
 		System.out.println("Sp. Atk:\t " + stats[Const.SPD]);
@@ -95,25 +89,8 @@ public abstract class Pokemon {
 		System.out.println();
 		displayTotalStats();
 	}
-		
-	public final String toString() {
-		return nickname + "  [" + name + " Lv" + level + "]";
-	}
 	
-	public final void rename(String newName) {
-		System.out.println(nickname + " is now named " + newName + "!");
-		nickname = newName;
-	}
-
-	protected final double getExperience() {
-		return experience;
-	}
-
-	protected final double experienceAtLevel(final int level) {
-		return (6/5)*Math.pow(level, 3) - 15*Math.pow(level, 2) + 100*level - 140;
-	}
-
-	protected final void levelUp() {
+	public final void levelUp() {
 		level++;
 
 		int[] prevStats = stats.clone();
@@ -123,15 +100,14 @@ public abstract class Pokemon {
 		System.out.println();
 		displayIncStats(prevStats);
 	}
-
-	protected final void evolve(final String name, final int height, final double weight, final Type type1, final Type type2, final int[] baseStats, final Move move1, final Move move2) {
+		
+	protected final void evolve(final String name, final int height, final double weight, final Type type, final int[] baseStats, final Move move1, final Move move2) {
 		System.out.println("Congratulations! " + this.name + " evolved into " + name + "!");
 
 		this.name = name;
 		this.height = height;
 		this.weight = weight;
-		this.type1 = type1;
-		this.type2 = type2;
+		this.type = type;
 		this.baseStats = baseStats;
 		this.move1 = move1;
 		this.move2 = move2;
@@ -165,32 +141,64 @@ public abstract class Pokemon {
 		return totalStats;
 	}
 	
+	private final void attack(Pokemon opponent, int moveNum) {
+		Move move = (moveNum == 0 ? move1 : move2);
+		
+		if (Math.random() > move.getAccuracy()) {
+			System.out.println(nickname + " missed!");
+		}
+		else {
+			final double randomFactor = ((Const.rand.nextInt(16) + 85) / 100.0);
+			final double STAB = (move.getType() == type) ? 1.5 : 1;
+			final double modifier = randomFactor * STAB * move.getType().effectiveness(opponent.type);
+			
+			final int attack = (move.getCategory() == Const.PHYSICAL) ? Const.ATK : Const.SPA;
+			final int defense = (move.getCategory() == Const.PHYSICAL) ? Const.DEF : Const.SPD;
+			
+			final int damage = (int) Math.floor(((((((2 * level) / 5.0) + 2) * move.getPower() * ((double) stats[attack] / opponent.stats[defense])) + 2) / 50) * modifier);
+			
+			System.out.println(nickname + " used " + move.getName() + "! [" + damage + " damage]");
+			opponent.currentHP -= damage;
+			
+			if (move.getType().effectiveness(opponent.type) == 0.5) {
+				System.out.println("It's not very effective...");
+			}
+			else if (move.getType().effectiveness(opponent.type) == 2) {
+				System.out.println("It's super effective!");
+			}
+		}
+	}
+	
 	public final static void battle(Pokemon you, Pokemon opponent) {
 		int turn = 1;
 		int escapes = 0;
+		
+		Pokemon winner = you; //initialized value, may change
+		
+		System.out.println("A wild " + opponent.nickname + " appeared!");
 		battle: while (true) {
-			System.out.println("A wild " + opponent + " appeared!");
+			System.out.println();
 			System.out.println("—————————— TURN " + turn + " ——————————");
 			System.out.println();
-			System.out.println(opponent.name + " Lv" + opponent.level + "[HP " + opponent.currentHP + " / " + opponent.stats[Const.HP]);
-			System.out.println(you.name + " Lv" + you.level + "[HP " + you.currentHP + " / " + you.stats[Const.HP]);
+			System.out.println(you.nickname + " Lv" + you.level + " [HP " + you.currentHP + " / " + you.stats[Const.HP] + "]");
+			System.out.println(opponent.nickname + " Lv" + opponent.level + " [HP " + opponent.currentHP + " / " + opponent.stats[Const.HP] + "]");
 			System.out.println();
-			System.out.println("What will " + you.name + " do?");
+			System.out.println("What will " + you.nickname + " do?");
 			System.out.println("1: " + you.move1.getName());
 			System.out.println("2: " + you.move2.getName());
 			System.out.println("3: Run");
 			
-			Move move;
+			final int moveNum;
 			loop: while (true) {
 				String choice = Const.scan.nextLine();
 				System.out.println();
 				
 				switch (choice) {
 					case "1":
-						move = you.move1;
+						moveNum = 0;
 						break loop;
 					case "2":
-						move = you.move2;
+						moveNum = 1;
 						break loop;
 					case "3":
 						//TODO: run code
@@ -209,20 +217,53 @@ public abstract class Pokemon {
 				}
 			}
 			
-			final double randomFactor = ((Const.rand.nextInt(16) + 85) / 100.0);
-			final double STAB = (move.getType() == you.type1 || move.getType() == you.type2) ? 1.5 : 1;
-			final double modifier = randomFactor * STAB * move.getType().effectiveness(opponent.type1) * move.getType().effectiveness(opponent.type2);
+			final boolean priority;
+			if (you.stats[Const.SPE] > opponent.stats[Const.SPE]) {
+				priority = true;
+			}
+			else if (opponent.stats[Const.SPE] > you.stats[Const.SPE]) {
+				priority = false;
+			}
+			else {
+				priority = (Math.random() < 0.5 ? true : false);
+			}
 			
+			if (priority) {
+				you.attack(opponent, moveNum);
+				if (opponent.currentHP <= 0) {
+					winner = you;
+					break battle;
+				}
+				
+				System.out.println();
+				
+				opponent.attack(you, Const.rand.nextInt(2));
+				if (you.currentHP <= 0) {
+					winner = opponent;
+					break battle;
+				}
+			}
+			else {
+				opponent.attack(you, Const.rand.nextInt(2));
+				if (you.currentHP <= 0) {
+					winner = opponent;
+					break battle;
+				}
+				
+				System.out.println();
+				
+				you.attack(opponent, moveNum);
+				if (opponent.currentHP <= 0) {
+					winner = you;
+					break battle;
+				}
+			}
 			
-			final int attack = (move.getCategory() == Const.PHYSICAL) ? Const.ATK : Const.SPA;
-			final int defense = (move.getCategory() == Const.PHYSICAL) ? Const.DEF : Const.SPD;
-			
-			final double damage = ((((((2 * you.level) / 5.0) + 2) * move.getPower() * ((double) you.stats[attack] / opponent.stats[defense])) + 2) / 50) * modifier;
-			
-			
-			System.out.println(you.nickname + " used " + );
-			opponent.currentHP -= damage;
+			turn++;
 		}
+		
+		System.out.println();
+		System.out.println(winner.nickname + " won!");
 	}
 
 }
