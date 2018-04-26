@@ -1,4 +1,3 @@
-
-public class Charmander extends Pokemon implements Domesticated {
+public class Charmander extends Domesticated implements Fire {
 
 }
