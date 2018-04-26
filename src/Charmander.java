@@ -1,7 +1,7 @@
-public final class Charmander extends Domesticated{
+public final class Charmander extends Domesticated implements Fire{
 
 	public Charmander(String nickname, int level) {
-		super("Charmander", nickname, 24, 18.7, Const.FIRE, level, new int[] {39, 52, 43, 60, 50, 65}, Const.TACKLE, VINE_WHIP);
+		super("Charmander", nickname, 24, 18.7, Const.FIRE, level, new int[] {39, 52, 43, 60, 50, 65}, Const.TACKLE, EMBER);
 	}
 	
 	public void tick() {
@@ -9,7 +9,7 @@ public final class Charmander extends Domesticated{
 			levelUp();
 			
 			if (getLevel() >= 16) {
-				evolve("Charmeleon", 43, 41.9, Const.FIRE, new int[] {58, 64, 58, 80, 65, 80}, VINE_WHIP, RAZOR_LEAF);
+				evolve("Charmeleon", 43, 41.9, Const.FIRE, new int[] {58, 64, 58, 80, 65, 80}, EMBER, FIRE_FANG);
 			}
 			
 			if (getLevel() >= 36) {

@@ -13,6 +13,9 @@ public class Const {
 	public static final Type NORMAL = new Type("Normal", new String[0], new String[0]);
 	public static final Type FIRE = new Type("Fire", new String[] {"Grass"}, new String[] {"Fire", "Water", "Dragon"});
 	public static final Type WATER = new Type("Water", new String[] {"Fire"}, new String[] {"Water", "Grass", "Dragon"});
+	//electric and psychic need work
+	public static final Type ELECTRIC = new Type("Electric", new String[] {"Grass"}, new String[] {"Fire", "Water", "Dragon"});
+	public static final Type PSYCHIC = new Type("Psychic", new String[] {"Grass"}, new String[] {"Fire", "Water", "Dragon"});
 	public static final Type GRASS = new Type("Grass", new String[] {"Water"}, new String[] {"Fire", "Grass", "Poison", "Dragon"});
 	public static final Type POISON = new Type("Poison", new String[] {"Grass"}, new String[] {"Poison"});
 	public static final Type DRAGON = new Type("Dragon", new String[] {"Dragon"}, new String[0]);
