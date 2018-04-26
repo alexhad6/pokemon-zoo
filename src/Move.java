@@ -22,13 +22,6 @@ public final class Move {
 		return name;
 	}
 	
-//	public double damage(Pokemon pokemon) {
-//		Random random = new Random();
-//		
-//		
-//		return 
-//	}
-	
 	public Type getType() {
 		return type;
 	}

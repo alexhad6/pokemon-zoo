@@ -26,13 +26,21 @@ public abstract class Domesticated extends Pokemon {
 		boolean won = Pokemon.battle(this, opponent);
 		
 		if (won) {
-			int experience = opponent.getBaseXP();
+			int XPGain = (int) Math.floor((opponent.getBaseXP() * opponent.getLevel()) / 7.0);
+			experience += XPGain;
+			System.out.println(getNickname() + " gained " + XPGain + " experience! [" + (experienceAtLevel(getLevel() + 1) - experience) + " to until level " + (getLevel() + 1) + ".]");
+			
+			int stat = opponent.getEVType();
+			int inc = opponent.getEV();
+			
+			if (totalEV() < 510 + inc && totalEV(stat) < 255 + inc) {
+				incEV(stat, inc);
+			}
 		}
-		
 	}
 	
 	public void pokecenter() {
-		
+		restoreHP();
 	}
 	
 	public final String toString() {

@@ -47,8 +47,8 @@ public final class PokemonZoo {
 		return domesticated.get(i);
 	}
 
-	public Pokemon getRandWild() {
-		return wild.get(Const.rand.nextInt(wild.size()));
+	public Wild getRandWild() {
+		return (Wild) wild.get(Const.rand.nextInt(wild.size()));
 	}
 
 	public int numDomesticated() {

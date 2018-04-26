@@ -58,6 +58,28 @@ public abstract class Pokemon {
 		return level;
 	}
 	
+	public final int totalEV(int stat) {
+		return EVs[stat];
+	}
+	
+	public final int totalEV() {
+		int total = 0;
+		
+		for (int EV : EVs) {
+			total += EV;
+		}
+		
+		return total;
+	}
+	
+	public final void incEV(int stat, int amt) {
+		EVs[stat] += amt;
+	}
+	
+	public final void restoreHP() {
+		currentHP = stats[Const.HP];
+	}
+	
 	public final void rename(String newName) {
 		System.out.println(nickname + " is now named " + newName + "!");
 		nickname = newName;
