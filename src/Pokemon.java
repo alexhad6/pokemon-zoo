@@ -264,6 +264,8 @@ public abstract class Pokemon {
 		
 		System.out.println();
 		System.out.println(winner.nickname + " won!");
+		
+		return winner == you;
 	}
 
 }

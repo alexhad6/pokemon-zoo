@@ -22,8 +22,13 @@ public abstract class Domesticated extends Pokemon {
 	}
 
 
-	public void train(Pokemon opponent) {
-		Pokemon.battle(this, opponent);
+	public void train(Wild opponent) {
+		boolean won = Pokemon.battle(this, opponent);
+		
+		if (won) {
+			int experience = opponent.getBaseXP();
+		}
+		
 	}
 	
 	public void pokecenter() {
