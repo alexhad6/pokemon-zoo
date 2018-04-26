@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public final class Move {
 	
 	private final String name;
@@ -20,8 +22,22 @@ public final class Move {
 		return name;
 	}
 	
-	public double damage(Pokemon pokemon) {
-		return 0; //fill in
+//	public double damage(Pokemon pokemon) {
+//		Random random = new Random();
+//		
+//		
+//		return 
+//	}
+	
+	public Type getType() {
+		return type;
 	}
 	
+	public int getPower() {
+		return power;
+	}
+	
+	public int getCategory() {
+		return category;
+	}
 }

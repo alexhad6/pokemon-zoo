@@ -1,11 +1,9 @@
-import java.util.Random;
+
 import java.util.Scanner;
 
 public abstract class Pokemon {
-
-	private final Random random = new Random();
-
-	//data
+	
+	//static data (can change with evolution or rename)
 	private String name;
 	private String nickname;
 	private int height;
@@ -13,7 +11,8 @@ public abstract class Pokemon {
 	private Type type1;
 	private Type type2;
 	private final Nature nature;
-
+	
+	//variable data
 	private int level;
 	private double experience;
 
@@ -21,8 +20,8 @@ public abstract class Pokemon {
 	private int[] baseStats;
 	private final int[] IVs;
 	private final int[] EVs;
-	private int[] totalStats;
-	private int[] currentStats;
+	private int[] stats;
+	private int currentHP;
 
 	//moves
 	private Move move1;
@@ -37,7 +36,7 @@ public abstract class Pokemon {
 		this.weight = weight;
 		this.type1 = type1;
 		this.type2 = type2;
-		this.nature = Constants.NATURES[random.nextInt(20)];
+		this.nature = Const.NATURES[Const.rand.nextInt(20)];
 
 		//variable data
 		this.level = level;
@@ -48,21 +47,17 @@ public abstract class Pokemon {
 		EVs = new int[] {0, 0, 0, 0, 0, 0};
 		IVs = new int[6];
 		for (int stat = 0; stat < 6; stat++) {
-			IVs[stat] = random.nextInt(32);
+			IVs[stat] = Const.rand.nextInt(32);
 		}
-		totalStats = calculateTotalStats();
-		currentStats = totalStats.clone();
+		stats = calculateTotalStats();
+		currentHP = stats[Const.HP];
 
 		//moves
 		this.move1 = move1;
 		this.move2 = move2;
 	}
 
-	protected void battle(Pokemon opponent) {
-		
-	}
-
-	public void feed() {
+	public final void feed() {
 
 	}
 	
@@ -75,21 +70,21 @@ public abstract class Pokemon {
 	}
 
 	protected final void displayTotalStats() {
-		System.out.println("HP:\t " + totalStats[Constants.HP]);
-		System.out.println("Attack:\t " + totalStats[Constants.ATK]);
-		System.out.println("Defense:\t " + totalStats[Constants.DEF]);
-		System.out.println("Sp. Atk:\t " + totalStats[Constants.SPD]);
-		System.out.println("Sp. Def:\t " + totalStats[Constants.SPA]);
-		System.out.println("Speed:\t " + totalStats[Constants.SPE]);
+		System.out.println("HP:\t " + stats[Const.HP]);
+		System.out.println("Attack:\t " + stats[Const.ATK]);
+		System.out.println("Defense:\t " + stats[Const.DEF]);
+		System.out.println("Sp. Atk:\t " + stats[Const.SPD]);
+		System.out.println("Sp. Def:\t " + stats[Const.SPA]);
+		System.out.println("Speed:\t " + stats[Const.SPE]);
 	}
 
 	private final void displayIncStats(int[] prevStats) {
-		System.out.println("HP:\t +" + (totalStats[Constants.HP] - prevStats[Constants.HP]) + " => " + totalStats[Constants.HP]);
-		System.out.println("Attack:\t +" + (totalStats[Constants.ATK] - prevStats[Constants.ATK]) + " => " + totalStats[Constants.ATK]);
-		System.out.println("Defense:\t +" + (totalStats[Constants.DEF] - prevStats[Constants.DEF]) + " => " + totalStats[Constants.DEF]);
-		System.out.println("Sp. Atk:\t +" + (totalStats[Constants.SPD] - prevStats[Constants.SPD]) + " => " + totalStats[Constants.SPD]);
-		System.out.println("Sp. Def:\t +" + (totalStats[Constants.SPA] - prevStats[Constants.SPA]) + " => " + totalStats[Constants.SPA]);
-		System.out.println("Speed:\t +" + (totalStats[Constants.SPE] - prevStats[Constants.SPE] + " => " + totalStats[Constants.SPE]));
+		System.out.println("HP:\t +" + (stats[Const.HP] - prevStats[Const.HP]) + " => " + stats[Const.HP]);
+		System.out.println("Attack:\t +" + (stats[Const.ATK] - prevStats[Const.ATK]) + " => " + stats[Const.ATK]);
+		System.out.println("Defense:\t +" + (stats[Const.DEF] - prevStats[Const.DEF]) + " => " + stats[Const.DEF]);
+		System.out.println("Sp. Atk:\t +" + (stats[Const.SPD] - prevStats[Const.SPD]) + " => " + stats[Const.SPD]);
+		System.out.println("Sp. Def:\t +" + (stats[Const.SPA] - prevStats[Const.SPA]) + " => " + stats[Const.SPA]);
+		System.out.println("Speed:\t +" + (stats[Const.SPE] - prevStats[Const.SPE] + " => " + stats[Const.SPE]));
 	}
 
 	public final void displayInfo() {
@@ -104,6 +99,11 @@ public abstract class Pokemon {
 	public final String toString() {
 		return nickname + "  [" + name + " Lv" + level + "]";
 	}
+	
+	public final void rename(String newName) {
+		System.out.println(nickname + " is now named " + newName + "!");
+		nickname = newName;
+	}
 
 	protected final double getExperience() {
 		return experience;
@@ -112,17 +112,12 @@ public abstract class Pokemon {
 	protected final double experienceAtLevel(final int level) {
 		return (6/5)*Math.pow(level, 3) - 15*Math.pow(level, 2) + 100*level - 140;
 	}
-	
-	public final void rename(String newName) {
-		System.out.println(nickname + " is now named " + newName + "!");
-		nickname = newName;
-	}
 
 	protected final void levelUp() {
 		level++;
 
-		int[] prevStats = totalStats.clone();
-		totalStats = calculateTotalStats();
+		int[] prevStats = stats.clone();
+		stats = calculateTotalStats();
 
 		System.out.println(nickname + " grew to level " + level + "!");
 		System.out.println();
@@ -146,9 +141,9 @@ public abstract class Pokemon {
 		int[] totalStats = new int[6];
 
 		for (int stat = 0; stat < totalStats.length; stat++) {
-			int base = (int) Math.floor(((2*baseStats[stat] + IVs[stat] + Math.floor(EVs[stat]/4)) * level) / 100);
+			int base = (int) Math.floor(((2 * baseStats[stat] + IVs[stat] + Math.floor(EVs[stat] / 4.0)) * level) / 100.0);
 
-			if (stat == Constants.HP) {
+			if (stat == Const.HP) {
 				totalStats[stat] = base + level + 5;
 			}
 			else {
@@ -171,27 +166,23 @@ public abstract class Pokemon {
 	}
 	
 	public final static void battle(Pokemon you, Pokemon opponent) {
-		Random random = new Random();
-		Scanner scanner = new Scanner(System.in);
-		
 		int turn = 1;
 		int escapes = 0;
 		battle: while (true) {
 			System.out.println("A wild " + opponent + " appeared!");
 			System.out.println("—————————— TURN " + turn + " ——————————");
 			System.out.println();
-			System.out.println(opponent.name + " Lv" + opponent.level + "[HP " + opponent.currentStats[Constants.HP] + " / " + opponent.totalStats[Constants.HP]);
-			System.out.println(you.name + " Lv" + you.level + "[HP " + you.currentStats[Constants.HP] + " / " + you.totalStats[Constants.HP]);
+			System.out.println(opponent.name + " Lv" + opponent.level + "[HP " + opponent.currentHP + " / " + opponent.stats[Const.HP]);
+			System.out.println(you.name + " Lv" + you.level + "[HP " + you.currentHP + " / " + you.stats[Const.HP]);
 			System.out.println();
 			System.out.println("What will " + you.name + " do?");
 			System.out.println("1: " + you.move1.getName());
 			System.out.println("2: " + you.move2.getName());
 			System.out.println("3: Run");
 			
-			
 			Move move;
 			loop: while (true) {
-				String choice = scanner.nextLine();
+				String choice = Const.scan.nextLine();
 				System.out.println();
 				
 				switch (choice) {
@@ -203,8 +194,8 @@ public abstract class Pokemon {
 						break loop;
 					case "3":
 						//TODO: run code
-						int chance = (int) Math.floor(((double) (you.totalStats[Constants.SPE] * 128) / opponent.totalStats[Constants.SPE]) + 30 * escapes) % 256;
-						if (random.nextInt(256) < chance) {
+						int chance = (int) Math.floor(((double) (you.stats[Const.SPE] * 128) / opponent.stats[Const.SPE]) + 30 * escapes) % 256;
+						if (Const.rand.nextInt(256) < chance) {
 							System.out.println(you.nickname + " ran away!");
 							break battle; //exit the battle
 						}
@@ -217,6 +208,20 @@ public abstract class Pokemon {
 						System.out.println("Please enter 1–3: ");
 				}
 			}
+			
+			final double randomFactor = ((Const.rand.nextInt(16) + 85) / 100.0);
+			final double STAB = (move.getType() == you.type1 || move.getType() == you.type2) ? 1.5 : 1;
+			final double modifier = randomFactor * STAB * move.getType().effectiveness(opponent.type1) * move.getType().effectiveness(opponent.type2);
+			
+			
+			final int attack = (move.getCategory() == Const.PHYSICAL) ? Const.ATK : Const.SPA;
+			final int defense = (move.getCategory() == Const.PHYSICAL) ? Const.DEF : Const.SPD;
+			
+			final double damage = ((((((2 * you.level) / 5.0) + 2) * move.getPower() * ((double) you.stats[attack] / opponent.stats[defense])) + 2) / 50) * modifier;
+			
+			
+			System.out.println(you.nickname + " used " + );
+			opponent.currentHP -= damage;
 		}
 	}
 

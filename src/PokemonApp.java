@@ -1,4 +1,4 @@
-import java.util.Scanner;
+
 
 public class PokemonApp {
 	
@@ -7,7 +7,6 @@ public class PokemonApp {
 	public static void main(String[] args) {
 
 		final PokemonZoo zoo = new PokemonZoo();
-		final Scanner scanner = new Scanner(System.in);
 
 		zoo.addPokemon(new Bulbasaur("Bob", 15));
 		zoo.addPokemon(new Bulbasaur("Fred", 10));
@@ -23,7 +22,7 @@ public class PokemonApp {
 		System.out.println("What would you like to do?");
 		
 		while(true) {
-			System.out.println("1: Display pokemon");
+			System.out.println("1: Visit pokemon");
 			System.out.println("2: Check stats");
 			System.out.println("3: Rename");
 			System.out.println("4: Train"); //battle another pokemon
@@ -31,7 +30,7 @@ public class PokemonApp {
 			System.out.println("6: Send to Pokecenter");
 			
 			loop: while (true) {
-				String choice = scanner.nextLine();
+				String choice = Const.scan.nextLine();
 				System.out.println();
 				switch (choice) {
 					case "1": {
@@ -45,7 +44,7 @@ public class PokemonApp {
 						System.out.println("7: All Rattata");
 	
 						loop2: while (true) {
-							String choice2 = scanner.nextLine();
+							String choice2 = Const.scan.nextLine();
 							System.out.println();
 							switch(choice2) {
 							case "1":
@@ -78,15 +77,15 @@ public class PokemonApp {
 					}
 					case "2": {
 						System.out.println("Which pokemon's stats would you like to check?");
-						choosePokemon(zoo, scanner).displayInfo();
+						choosePokemon(zoo).displayInfo();
 						break loop;
 					}
 					case "3": {
 						System.out.println("Which pokemon would you like to rename?");
-						Pokemon pokemon = choosePokemon(zoo, scanner);
+						Pokemon pokemon = choosePokemon(zoo);
 						if (pokemon instanceof Domesticated) {
 							System.out.println("What should " + pokemon.getNickname() + "'s new name be?");
-							String newName = scanner.nextLine();
+							String newName = Const.scan.nextLine();
 							System.out.println();
 							pokemon.rename(newName);
 						}
@@ -97,15 +96,15 @@ public class PokemonApp {
 					}
 					case "4": {
 						System.out.println("Which pokemon would you like to train?");
-						Pokemon pokemon = choosePokemon(zoo, scanner);
+						Pokemon pokemon = choosePokemon(zoo);
 					}
 					case "5": {
 						System.out.println("Which pokemon would you like to feed?");
-						Pokemon pokemon = choosePokemon(zoo, scanner);
+						Pokemon pokemon = choosePokemon(zoo);
 					}
 					case "6": {
 						System.out.println("Which pokemon would you like to send to the Pokecenter?");
-						Pokemon pokemon = choosePokemon(zoo, scanner);
+						Pokemon pokemon = choosePokemon(zoo);
 					}
 					default: {
 						System.out.print("Please enter 1–6: ");
@@ -121,13 +120,13 @@ public class PokemonApp {
 
 	}
 	
-	private static Pokemon choosePokemon(PokemonZoo zoo, Scanner scanner) {
+	private static Pokemon choosePokemon(PokemonZoo zoo) {
 		zoo.displayAllWithNumbers("Pokemon");
 		
 		int choice = 0;
 		while (true) {
 			try {
-				choice = Integer.parseInt(scanner.nextLine());
+				choice = Integer.parseInt(Const.scan.nextLine());
 				if (choice >= 1 && choice <= zoo.getNumPokemon()) {
 					break;
 				}

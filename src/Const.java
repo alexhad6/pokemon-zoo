@@ -1,5 +1,10 @@
+import java.util.Random;
+import java.util.Scanner;
 
-public class Constants {
+public class Const {
+	
+	public static final Random rand = new Random();
+	public static final Scanner scan = new Scanner(System.in);
 	
 	//stats
 	public static final int HP = 0, ATK = 1, DEF = 2, SPA = 3, SPD = 4, SPE = 5;
