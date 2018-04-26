@@ -27,10 +27,9 @@ public class PokemonApp {
 			System.out.println("1: Visit pokemon");
 			System.out.println("2: Check stats");
 			System.out.println("3: Rename");
-			System.out.println("4: Train"); //battle another pokemon
-			System.out.println("5: Practice"); //battle another pokemon
-			System.out.println("6: Feed");
-			System.out.println("7: Send to Pokecenter");
+			System.out.println("4: Train");
+			System.out.println("5: Feed");
+			System.out.println("6: Send to Pokecenter");
 			
 			loop: while (true) {
 				String choice = Const.scan.nextLine();

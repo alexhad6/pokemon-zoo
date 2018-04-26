@@ -1,4 +1,3 @@
-
 public final class Bulbasaur extends Domesticated implements Grass {
 	
 	public Bulbasaur(String nickname, int level) {

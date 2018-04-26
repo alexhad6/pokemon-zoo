@@ -169,7 +169,7 @@ public abstract class Pokemon {
 		}
 	}
 	
-	public final static void battle(Pokemon you, Pokemon opponent) {
+	public final static boolean battle(Pokemon you, Pokemon opponent) {
 		int turn = 1;
 		int escapes = 0;
 		
