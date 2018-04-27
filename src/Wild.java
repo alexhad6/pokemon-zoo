@@ -25,6 +25,10 @@ public abstract class Wild extends Pokemon {
 		return EVType;
 	}
 	
+	public final String toString() {
+		return getName() + " Lv" + getLevel();
+	}
+	
 }
 
 

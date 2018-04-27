@@ -1,27 +1,22 @@
-import java.util.Scanner;
-
 public abstract class Pokemon {
 	
 	private String name;
 	private String nickname;
 	private int height;
 	private double weight;
-	private Type type;
+	private final Type type;
 	private final Nature nature;
 	private int level;
 	
-	//statistics
 	private int[] baseStats;
 	private final int[] IVs;
 	private final int[] EVs;
 	private int[] stats;
 	private int currentHP;
 	
-	//moves
 	private Move move1;
 	private Move move2;
 	
-	//everything
 	public Pokemon(final String name, final String nickname, final int height, final double weight, final Type type, final int level, final int[] baseStats, final Move move1, final Move move2) {
 		this.name = name;
 		this.nickname = nickname;
@@ -31,17 +26,15 @@ public abstract class Pokemon {
 		this.nature = Const.NATURES[Const.rand.nextInt(20)];
 		this.level = level;
 
-		//statistics
 		this.baseStats = baseStats;
-		EVs = new int[] {0, 0, 0, 0, 0, 0};
 		IVs = new int[6];
+		EVs = new int[] {0, 0, 0, 0, 0, 0};
 		for (int stat = 0; stat < 6; stat++) {
 			IVs[stat] = Const.rand.nextInt(32);
 		}
 		stats = calculateTotalStats();
 		currentHP = stats[Const.HP];
 
-		//moves
 		this.move1 = move1;
 		this.move2 = move2;
 	}
@@ -58,35 +51,38 @@ public abstract class Pokemon {
 		return level;
 	}
 	
-	public final int totalEV(int stat) {
+	public final int getEV(int stat) {
 		return EVs[stat];
 	}
 	
-	public final int totalEV() {
+	public final int totalEVs() {
 		int total = 0;
-		
-		for (int EV : EVs) {
+		for (final int EV : EVs) {
 			total += EV;
 		}
 		
 		return total;
 	}
 	
-	public final void incEV(int stat, int amt) {
-		EVs[stat] += amt;
+	public final void rename(String newName) {
+		System.out.println(nickname + " is now named " + newName + "!");
+		nickname = newName;
+	}
+	
+	public final void increaseEV(int stat, int amount) {
+		EVs[stat] += amount;
 	}
 	
 	public final void restoreHP() {
 		currentHP = stats[Const.HP];
 	}
 	
-	public final void rename(String newName) {
-		System.out.println(nickname + " is now named " + newName + "!");
-		nickname = newName;
+	public final String showHP() {
+		return currentHP + " / " + stats[Const.HP];
 	}
 
-	protected final void displayTotalStats() {
-		System.out.println("HP:\t " + currentHP + " / " + stats[Const.HP]);
+	public final void displayTotalStats() {
+		System.out.println("HP:\t " + showHP());
 		System.out.println("Attack:\t " + stats[Const.ATK]);
 		System.out.println("Defense:\t " + stats[Const.DEF]);
 		System.out.println("Sp. Atk:\t " + stats[Const.SPD]);
@@ -94,7 +90,7 @@ public abstract class Pokemon {
 		System.out.println("Speed:\t " + stats[Const.SPE]);
 	}
 
-	private final void displayIncStats(int[] prevStats) {
+	public final void displayIncStats(int[] prevStats) {
 		System.out.println("HP:\t +" + (stats[Const.HP] - prevStats[Const.HP]) + " => " + stats[Const.HP]);
 		System.out.println("Attack:\t +" + (stats[Const.ATK] - prevStats[Const.ATK]) + " => " + stats[Const.ATK]);
 		System.out.println("Defense:\t +" + (stats[Const.DEF] - prevStats[Const.DEF]) + " => " + stats[Const.DEF]);
@@ -103,7 +99,7 @@ public abstract class Pokemon {
 		System.out.println("Speed:\t +" + (stats[Const.SPE] - prevStats[Const.SPE] + " => " + stats[Const.SPE]));
 	}
 
-	public final void displayInfo() {
+	public final void displayAllInfo() {
 		System.out.println(this);
 		System.out.println("Height: " + height / 12 + "' " + height % 12 + "\"");
 		System.out.println("Weight: " + weight + " lbs");
@@ -123,13 +119,12 @@ public abstract class Pokemon {
 		displayIncStats(prevStats);
 	}
 		
-	protected final void evolve(final String name, final int height, final double weight, final Type type, final int[] baseStats, final Move move1, final Move move2) {
+	public final void evolve(final String name, final int height, final double weight, final int[] baseStats, final Move move1, final Move move2) {
 		System.out.println("Congratulations! " + this.name + " evolved into " + name + "!");
 
 		this.name = name;
 		this.height = height;
 		this.weight = weight;
-		this.type = type;
 		this.baseStats = baseStats;
 		this.move1 = move1;
 		this.move2 = move2;
@@ -163,8 +158,8 @@ public abstract class Pokemon {
 		return totalStats;
 	}
 	
-	private final void attack(Pokemon opponent, int moveNum) {
-		Move move = (moveNum == 0 ? move1 : move2);
+	private final void attack(final Pokemon opponent, final int moveNum) {
+		final Move move = (moveNum == 0 ? move1 : move2);
 		
 		if (Math.random() > move.getAccuracy()) {
 			System.out.println(nickname + " missed!");
@@ -195,15 +190,14 @@ public abstract class Pokemon {
 		int turn = 1;
 		int escapes = 0;
 		
-		Pokemon winner = you; //initialized value, may change
+		boolean won = false;
 		
-		System.out.println("A wild " + opponent.nickname + " appeared!");
 		battle: while (true) {
 			System.out.println();
 			System.out.println("—————————— TURN " + turn + " ——————————");
 			System.out.println();
-			System.out.println(you.nickname + " Lv" + you.level + " [HP " + you.currentHP + " / " + you.stats[Const.HP] + "]");
-			System.out.println(opponent.nickname + " Lv" + opponent.level + " [HP " + opponent.currentHP + " / " + opponent.stats[Const.HP] + "]");
+			System.out.println(you.nickname + " Lv" + you.level + " [HP " + you.showHP() + "]");
+			System.out.println(opponent.nickname + " Lv" + opponent.level + " [HP " + opponent.showHP() + "]");
 			System.out.println();
 			System.out.println("What will " + you.nickname + " do?");
 			System.out.println("1: " + you.move1.getName());
@@ -212,7 +206,7 @@ public abstract class Pokemon {
 			
 			final int moveNum;
 			loop: while (true) {
-				String choice = Const.scan.nextLine();
+				final String choice = Const.scan.nextLine();
 				System.out.println();
 				
 				switch (choice) {
@@ -223,19 +217,18 @@ public abstract class Pokemon {
 						moveNum = 1;
 						break loop;
 					case "3":
-						//TODO: run code
 						int chance = (int) Math.floor(((double) (you.stats[Const.SPE] * 128) / opponent.stats[Const.SPE]) + 30 * escapes) % 256;
 						if (Const.rand.nextInt(256) < chance) {
 							System.out.println(you.nickname + " ran away!");
-							break battle; //exit the battle
+							break battle;
 						}
 						else {
 							System.out.println(you.nickname + " couldn't escape!");
-							continue battle; //skips to next turn
+							escapes++;
+							continue battle;
 						}
-						
 					default:
-						System.out.println("Please enter 1–3: ");
+						System.out.println("Please choose 1–3: ");
 				}
 			}
 			
@@ -253,7 +246,7 @@ public abstract class Pokemon {
 			if (priority) {
 				you.attack(opponent, moveNum);
 				if (opponent.currentHP <= 0) {
-					winner = you;
+					won = true;
 					break battle;
 				}
 				
@@ -261,14 +254,14 @@ public abstract class Pokemon {
 				
 				opponent.attack(you, Const.rand.nextInt(2));
 				if (you.currentHP <= 0) {
-					winner = opponent;
+					you.currentHP = 0;
 					break battle;
 				}
 			}
 			else {
 				opponent.attack(you, Const.rand.nextInt(2));
 				if (you.currentHP <= 0) {
-					winner = opponent;
+					you.currentHP = 0;
 					break battle;
 				}
 				
@@ -276,7 +269,7 @@ public abstract class Pokemon {
 				
 				you.attack(opponent, moveNum);
 				if (opponent.currentHP <= 0) {
-					winner = you;
+					won = true;
 					break battle;
 				}
 			}
@@ -284,10 +277,7 @@ public abstract class Pokemon {
 			turn++;
 		}
 		
-		System.out.println();
-		System.out.println(winner.nickname + " won!");
-		
-		return winner == you;
+		return won;
 	}
-
+	
 }

@@ -1,5 +1,5 @@
 public class PokemonApp {
-	
+
 	private final static String LINE_BREAK = "\n––––––––––––––––––––––––––––––––––––––––\n";
 
 	public static void main(String[] args) {
@@ -12,25 +12,25 @@ public class PokemonApp {
 		zoo.addPokemon(new Bulbasaur("Zarg", 1));
 		zoo.addPokemon(new Rattata(10));
 
-		
+
 		System.out.println("Welcome to the PokeZoo!");
 		System.out.println();
 		System.out.println("There so much to do! You can visit parts of the zoo, check a Pokemon's stats, \n"
-						 + "rename a Pokemon, train a Pokemon by battle against a wild pokemon, practice \n"
-						 + "battling against other domesticated Pokemon, feed a Pokemon to relieve hunger, \n"
-						 + "or send a Pokemon to the Pokecenter to restore its health and hunger, and to \n"
-						 + "recover it if it has fainted.");
+				+ "rename a Pokemon, train a Pokemon by battle against a wild pokemon, practice \n"
+				+ "battling against other domesticated Pokemon, feed a Pokemon to relieve its hunger, \n"
+				+ "or send a Pokemon to the Pokecenter to restore its HP.");
 		System.out.println(LINE_BREAK);
 		System.out.println("What would you like to do?");
-		
+
 		while(true) {
 			System.out.println("1: Visit pokemon");
 			System.out.println("2: Check stats");
 			System.out.println("3: Rename");
 			System.out.println("4: Train");
-			System.out.println("5: Feed");
-			System.out.println("6: Send to Pokecenter");
-			
+			System.out.println("5: Practice");
+			System.out.println("6: Feed");
+			System.out.println("7: Send to Pokecenter");
+
 			loop: while (true) {
 				String choice = Const.scan.nextLine();
 				System.out.println();
@@ -54,12 +54,12 @@ public class PokemonApp {
 								System.out.println("Please choose 1–2: ");
 							}
 						}
-						
+	
 						break loop;
 					}
 					case "2": {
 						System.out.println("Which pokemon's stats would you like to check?");
-						choosePokemon(zoo).displayInfo();
+						choosePokemon(zoo).displayAllInfo();
 						break loop;
 					}
 					case "3": {
@@ -84,34 +84,44 @@ public class PokemonApp {
 						break loop;
 					}
 					case "5": {
+						System.out.println("Which pokemon would you like to use?");
+						Domesticated pokemon = choosePokemon(zoo);
+						System.out.println("Which pokemon would you like to practice against?");
+						Domesticated opponent = choosePokemon(zoo);
+						pokemon.practice(opponent);
+	
+						break loop;
+					}
+					case "6": {
 						System.out.println("Which pokemon would you like to feed?");
 						Domesticated pokemon = choosePokemon(zoo);
 						pokemon.feed();
 						break loop;
 					}
-					case "6": {
+					case "7": {
 						System.out.println("Which pokemon would you like to send to the Pokecenter?");
 						Domesticated pokemon = choosePokemon(zoo);
-						pokemon.pokecenter();
+						pokemon.restoreHP();
+						System.out.println(pokemon.getNickname() + "'s HP was restored!");
 						break loop;
 					}
 					default: {
-						System.out.print("Please choose 1–6: ");
+						System.out.print("Please choose 1–7: ");
 					}
 				}
 			}
-			
+
 			zoo.tick();
-			
+
 			System.out.println(LINE_BREAK);
 			System.out.println("What would you like to do next?");
 		}
 
 	}
-	
+
 	private static Domesticated choosePokemon(PokemonZoo zoo) {
 		zoo.displayDomesticatedWithNumbers();
-		
+
 		int choice = 0;
 		while (true) {
 			try {
@@ -124,7 +134,7 @@ public class PokemonApp {
 			System.out.print("Please choose 1–" + zoo.numDomesticated() + ": ");
 		}
 		System.out.println();
-		
+
 		return (Domesticated) zoo.getDomesticated(choice - 1);
 	}
 

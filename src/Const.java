@@ -6,10 +6,8 @@ public class Const {
 	public static final Random rand = new Random();
 	public static final Scanner scan = new Scanner(System.in);
 	
-	//stats
 	public static final int HP = 0, ATK = 1, DEF = 2, SPA = 3, SPD = 4, SPE = 5;
 
-	//types
 	public static final Type NORMAL = new Type("Normal", new String[0], new String[0]);
 	public static final Type FIRE = new Type("Fire", new String[] {"Grass"}, new String[] {"Fire", "Water", "Dragon"});
 	public static final Type WATER = new Type("Water", new String[] {"Fire"}, new String[] {"Water", "Grass", "Dragon"});
@@ -21,7 +19,6 @@ public class Const {
 	public static final Type DRAGON = new Type("Dragon", new String[] {"Dragon"}, new String[0]);
 	public static final Type DARK = new Type("Dark", new String[] {"Dark"}, new String[0]);
 
-	// natures
 	public static final Nature[] NATURES = { new Nature("Lonely", ATK, DEF), new Nature("Brave", ATK, SPE),
 		new Nature("Adamant", ATK, SPA), new Nature("Naughty", ATK, SPD), new Nature("Bold", DEF, ATK),
 		new Nature("Relaxed", DEF, SPE), new Nature("Impish", DEF, SPA), new Nature("Lax", DEF, SPD),
@@ -30,7 +27,6 @@ public class Const {
 		new Nature("Quiet", SPA, SPE), new Nature("Rash", SPA, DEF), new Nature("Calm", SPD, ATK),
 		new Nature("Gentle", SPD, DEF), new Nature("Sassy", SPD, SPE), new Nature("Careful", SPD, ATK) };
 
-	//moves
 	public static final int PHYSICAL = 0, SPECIAL = 1;
 	public static final Move TACKLE = new Move("Tackle", 35, 1, NORMAL, PHYSICAL, 40);
 	
