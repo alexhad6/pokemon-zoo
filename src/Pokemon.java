@@ -120,7 +120,7 @@ public abstract class Pokemon {
 	}
 
 	public final void evolve(final String name, final int height, final double weight, final int[] baseStats, final Move move1, final Move move2) {
-		System.out.println("Congratulations! " + this.name + " evolved into " + name + "!");
+		System.out.println("Congratulations! " + this.nickname + " evolved into " + name + "!");
 
 		this.name = name;
 		this.height = height;

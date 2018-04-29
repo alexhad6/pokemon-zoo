@@ -5,16 +5,17 @@ public final class Squirtle extends Domesticated implements Water{
 	}
 
 	public void levelTick() {
-		while(leveledUp()) {
-			levelUp();
-
-			if (getLevel() >= 16 && getName() != "Wartotle") {
+		while (leveledUp()) {
+			if (getLevel() + 1 >= 16 && getName() != "Wartotle") {
 				evolve("Wartotle", 39, 49.6, new int[] {59, 63, 80, 65, 80, 58}, WATER_GUN, BUBBLE_BEAM);
 			}
 
-			if (getLevel() >= 36 && getName() != "Blastoise") {
+			if (getLevel() + 1 >= 36 && getName() != "Blastoise") {
 				evolve("Blastoise", 63, 188.5, new int[] {79, 83, 100, 85, 105, 78}, BUBBLE_BEAM, HYDRO_PUMP);
 			}
+
+			System.out.println();
+			levelUp();
 		}
 	}
 
