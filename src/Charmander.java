@@ -8,11 +8,11 @@ public final class Charmander extends Domesticated implements Fire {
 		while(leveledUp()) {
 			levelUp();
 
-			if (getLevel() >= 16) {
+			if (getLevel() >= 16 && getName() != "Charmeleon") {
 				evolve("Charmeleon", 43, 41.9, new int[] {58, 64, 58, 80, 65, 80}, EMBER, FIRE_FANG);
 			}
 
-			if (getLevel() >= 36) {
+			if (getLevel() >= 36 && getName() != "Charizard") {
 				evolve("Charizard", 67, 199.5, new int[] {78, 84, 78, 109, 85, 100}, HEAT_WAVE, FLARE_BLITZ);
 			}
 		}

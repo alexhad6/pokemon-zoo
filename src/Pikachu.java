@@ -8,7 +8,7 @@ public final class Pikachu extends Domesticated implements Electric {
 		while(leveledUp()) {
 			levelUp();
 
-			if (getLevel() >= 34) {
+			if (getLevel() >= 34 && getName() != "Raichu") {
 				evolve("Raichu", 31, 66.1, new int[] {60, 90, 55, 90, 80, 110}, SPARK, THUNDERBOLT);
 			}
 		}
