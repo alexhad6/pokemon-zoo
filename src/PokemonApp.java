@@ -47,7 +47,7 @@ public class PokemonApp {
 		System.out.println();
 		System.out.println("There so much to do! You can visit parts of the zoo, check a Pokemon's stats, \n"
 				+ "rename a Pokemon, train a Pokemon by battle against a wild pokemon, practice \n"
-				+ "battling against other domesticated Pokemon, feed a Pokemon to relieve its hunger, \n"
+				+ "battling against other domesticated Pokemon, feed your Pokemon to relieve their hunger, \n"
 				+ "or send a Pokemon to the Pokecenter to restore its HP.");
 		System.out.println(LINE_BREAK);
 		System.out.println("What would you like to do?");
@@ -131,9 +131,8 @@ public class PokemonApp {
 						break loop;
 					}
 					case "6": {
-						System.out.println("Which pokemon would you like to feed?");
-						Domesticated pokemon = choosePokemon(zoo);
-						pokemon.feed();
+						zoo.feed();
+						System.out.println("Your pokemon were fed!");
 						break loop;
 					}
 					case "7": {

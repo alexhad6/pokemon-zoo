@@ -116,6 +116,13 @@ public final class PokemonZoo {
 		}
 	}
 
+	public void feed() {
+		for (Pokemon pokemon : domesticated) {
+			Domesticated dPokemon = (Domesticated) pokemon;
+			dPokemon.feed();
+		}
+	}
+
 	private void sortByName(final ArrayList<Pokemon> pokemon) {
 		for (int i = 0; i < pokemon.size(); i++) {
 			for (int j = i + 1; j < pokemon.size(); j++) {
