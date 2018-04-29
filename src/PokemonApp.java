@@ -5,26 +5,14 @@ public class PokemonApp {
 	public static void main(String[] args) {
 
 		final PokemonZoo zoo = new PokemonZoo();
-<<<<<<< HEAD
-		zoo.addPokemon(new Bulbasaur("Bob", 15));
-		zoo.addPokemon(new Bulbasaur("Fred", 10));
-		zoo.addPokemon(new Bulbasaur("Bob", 3));
-		zoo.addPokemon(new Bulbasaur("Zarg", 1));
-		//zoo.addPokemon(new Rattata(10));
-		zoo.addPokemon(new Mewtwo(30));
-		zoo.addPokemon(new Jigglypuff(15));
-		zoo.addPokemon(new Bulbasaur("Bulby", 5));
-		zoo.addPokemon(new Bulbasaur("Saur", 15));
-=======
 
 		zoo.addPokemon(new Bulbasaur("Bulby", 5));
 		zoo.addPokemon(new Bulbasaur("Saur", 15));
 
->>>>>>> 729427f297f5cd3dbcec71073b4a5cdaf2a5fbcf
 		zoo.addPokemon(new Charmander("Char", 7));
 		zoo.addPokemon(new Charmander("Blaze", 15));
 
-		zoo.addPokemon(new Squirtle("Squirte", 6));
+		zoo.addPokemon(new Squirtle("Squirt", 6));
 		zoo.addPokemon(new Squirtle("Bubbles", 15));
 
 		zoo.addPokemon(new Pikachu("Pika", 9));
