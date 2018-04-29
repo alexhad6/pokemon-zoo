@@ -4,11 +4,20 @@ import java.util.Collections;
 public final class PokemonZoo {
 
 	private final ArrayList<Pokemon> domesticated = new ArrayList<>();
-	private final ArrayList<Pokemon> wild = new ArrayList<>();
+	private final ArrayList<Pokemon> rattata = new ArrayList<>();
+	private final ArrayList<Pokemon> jigglypuff = new ArrayList<>();
+	private final ArrayList<Pokemon> mewtwo = new ArrayList<>();
 
 	public void tick() {
 		sortByName(domesticated);
-		sortByName(wild);
+		sortByName(rattata);
+		sortByName(jigglypuff);
+		sortByName(mewtwo);
+
+		for (Pokemon pokemon : domesticated) {
+			Domesticated dPokemon = (Domesticated) pokemon;
+			dPokemon.tick();
+		}
 	}
 
 	public void addPokemon(final Pokemon pokemon) {
@@ -16,9 +25,17 @@ public final class PokemonZoo {
 			domesticated.add(pokemon);
 			sortByName(domesticated);
 		}
-		else {
-			wild.add(pokemon);
-			sortByName(wild);
+		else if (pokemon instanceof Rattata) {
+			rattata.add(pokemon);
+			sortByName(rattata);
+		}
+		else if (pokemon instanceof Jigglypuff) {
+			jigglypuff.add(pokemon);
+			sortByName(jigglypuff);
+		}
+		else if (pokemon instanceof Mewtwo) {
+			mewtwo.add(pokemon);
+			sortByName(mewtwo);
 		}
 	}
 
@@ -26,8 +43,14 @@ public final class PokemonZoo {
 		if (pokemon instanceof Domesticated) {
 			domesticated.remove(pokemon);
 		}
-		else {
-			wild.remove(pokemon);
+		else if (pokemon instanceof Rattata) {
+			rattata.remove(pokemon);
+		}
+		else if (pokemon instanceof Jigglypuff) {
+			jigglypuff.remove(pokemon);
+		}
+		else if (pokemon instanceof Mewtwo) {
+			mewtwo.remove(pokemon);
 		}
 	}
 
@@ -47,8 +70,28 @@ public final class PokemonZoo {
 		return domesticated.get(i);
 	}
 
-	public Wild getRandWild() {
-		return (Wild) wild.get(Const.rand.nextInt(wild.size()));
+	public Wild getRandWild(Pokemon pokemon) {
+		final ArrayList<Pokemon> options = new ArrayList<>();
+
+		if (Math.random() < 0.05) {
+			options.add(mewtwo.get(Const.rand.nextInt(mewtwo.size())));
+		}
+
+		if (Math.random() < 0.5) {
+			for (Pokemon wild : jigglypuff) {
+				if (Math.abs(wild.getLevel() - pokemon.getLevel()) < 10) {
+					options.add(wild);
+				}
+			}
+		}
+
+		for (Pokemon wild : rattata) {
+			if (Math.abs(wild.getLevel() - pokemon.getLevel()) < 10) {
+				options.add(wild);
+			}
+		}
+
+		return (Wild) options.get(Const.rand.nextInt(options.size()));
 	}
 
 	public int numDomesticated() {
@@ -56,10 +99,20 @@ public final class PokemonZoo {
 	}
 
 	public void displayAllRattata() {
-		for (Pokemon pokemon : wild) {
-			if (pokemon instanceof Rattata) {
-				System.out.println(pokemon);
-			}
+		for (Pokemon pokemon : rattata) {
+			System.out.println(pokemon);
+		}
+	}
+
+	public void displayAllJigglypuff() {
+		for (Pokemon pokemon : jigglypuff) {
+			System.out.println(pokemon);
+		}
+	}
+
+	public void displayAllMewtwo() {
+		for (Pokemon pokemon : mewtwo) {
+			System.out.println(pokemon);
 		}
 	}
 

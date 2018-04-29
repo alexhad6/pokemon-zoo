@@ -186,11 +186,11 @@ public abstract class Pokemon {
 		}
 	}
 
-	public final static boolean battle(Pokemon you, Pokemon opponent) {
+	public final static int battle(Pokemon you, Pokemon opponent) {
 		int turn = 1;
 		int escapes = 0;
 
-		boolean won = false;
+		int won = 0;
 
 		battle: while (true) {
 			System.out.println();
@@ -204,73 +204,86 @@ public abstract class Pokemon {
 			System.out.println("2: " + you.move2.getName());
 			System.out.println("3: Run");
 
-			final int moveNum;
+			int moveNum = 0;
+			boolean run = false;
+
 			loop: while (true) {
 				final String choice = Const.scan.nextLine();
 				System.out.println();
 
 				switch (choice) {
-				case "1":
-					moveNum = 0;
-					break loop;
-				case "2":
-					moveNum = 1;
-					break loop;
-				case "3":
-					int chance = (int) Math.floor(((double) (you.stats[Const.SPE] * 128) / opponent.stats[Const.SPE]) + 30 * escapes) % 256;
-					if (Const.rand.nextInt(256) < chance) {
-						System.out.println(you.nickname + " ran away!");
+					case "1":
+						moveNum = 0;
+						break loop;
+					case "2":
+						moveNum = 1;
+						break loop;
+					case "3":
+						int chance = (int) Math.floor(((double) (you.stats[Const.SPE] * 128) / opponent.stats[Const.SPE]) + 30 * escapes) % 256;
+						if (Const.rand.nextInt(256) < chance) {
+							System.out.println(you.nickname + " ran away!");
+							won = 2;
+							break battle;
+						}
+						else {
+							System.out.println(you.nickname + " couldn't escape!");
+							escapes++;
+							run = true;
+							break loop;
+						}
+					default:
+						System.out.println("Please choose 1–3: ");
+					}
+			}
+
+			if (run) {
+				opponent.attack(you, Const.rand.nextInt(2));
+				if (you.currentHP <= 0) {
+					you.currentHP = 0;
+					break battle;
+				}
+			}
+			else {
+				final boolean priority;
+				if (you.stats[Const.SPE] > opponent.stats[Const.SPE]) {
+					priority = true;
+				}
+				else if (opponent.stats[Const.SPE] > you.stats[Const.SPE]) {
+					priority = false;
+				}
+				else {
+					priority = (Math.random() < 0.5 ? true : false);
+				}
+
+				if (priority) {
+					you.attack(opponent, moveNum);
+					if (opponent.currentHP <= 0) {
+						won = 1;
 						break battle;
 					}
-					else {
-						System.out.println(you.nickname + " couldn't escape!");
-						escapes++;
-						continue battle;
+
+					System.out.println();
+
+					opponent.attack(you, Const.rand.nextInt(2));
+					if (you.currentHP <= 0) {
+						you.currentHP = 0;
+						break battle;
 					}
-				default:
-					System.out.println("Please choose 1–3: ");
 				}
-			}
+				else {
+					opponent.attack(you, Const.rand.nextInt(2));
+					if (you.currentHP <= 0) {
+						you.currentHP = 0;
+						break battle;
+					}
 
-			final boolean priority;
-			if (you.stats[Const.SPE] > opponent.stats[Const.SPE]) {
-				priority = true;
-			}
-			else if (opponent.stats[Const.SPE] > you.stats[Const.SPE]) {
-				priority = false;
-			}
-			else {
-				priority = (Math.random() < 0.5 ? true : false);
-			}
+					System.out.println();
 
-			if (priority) {
-				you.attack(opponent, moveNum);
-				if (opponent.currentHP <= 0) {
-					won = true;
-					break battle;
-				}
-
-				System.out.println();
-
-				opponent.attack(you, Const.rand.nextInt(2));
-				if (you.currentHP <= 0) {
-					you.currentHP = 0;
-					break battle;
-				}
-			}
-			else {
-				opponent.attack(you, Const.rand.nextInt(2));
-				if (you.currentHP <= 0) {
-					you.currentHP = 0;
-					break battle;
-				}
-
-				System.out.println();
-
-				you.attack(opponent, moveNum);
-				if (opponent.currentHP <= 0) {
-					won = true;
-					break battle;
+					you.attack(opponent, moveNum);
+					if (opponent.currentHP <= 0) {
+						won = 1;
+						break battle;
+					}
 				}
 			}
 

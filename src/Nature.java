@@ -1,4 +1,5 @@
 public class Nature {
+
 	private final String name;
 	private final int incStat, decStat;
 

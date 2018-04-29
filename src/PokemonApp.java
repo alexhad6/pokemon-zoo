@@ -6,12 +6,42 @@ public class PokemonApp {
 
 		final PokemonZoo zoo = new PokemonZoo();
 
-		zoo.addPokemon(new Bulbasaur("Bob", 15));
-		zoo.addPokemon(new Bulbasaur("Fred", 10));
-		zoo.addPokemon(new Bulbasaur("Bob", 3));
-		zoo.addPokemon(new Bulbasaur("Zarg", 1));
-		zoo.addPokemon(new Rattata(10));
+		zoo.addPokemon(new Bulbasaur("Bulby", 5));
+		zoo.addPokemon(new Bulbasaur("Saur", 15));
 
+		zoo.addPokemon(new Charmander("Char", 7));
+		zoo.addPokemon(new Charmander("Blaze", 15));
+
+		zoo.addPokemon(new Squirtle("Squirte", 6));
+		zoo.addPokemon(new Squirtle("Bubbles", 15));
+
+		zoo.addPokemon(new Pikachu("Pika", 9));
+		zoo.addPokemon(new Pikachu("Zap", 33));
+
+		zoo.addPokemon(new Rattata(1));
+		zoo.addPokemon(new Rattata(2));
+		zoo.addPokemon(new Rattata(3));
+		zoo.addPokemon(new Rattata(5));
+		zoo.addPokemon(new Rattata(8));
+		zoo.addPokemon(new Rattata(11));
+		zoo.addPokemon(new Rattata(16));
+		zoo.addPokemon(new Rattata(19));
+		zoo.addPokemon(new Rattata(24));
+		zoo.addPokemon(new Rattata(31));
+		zoo.addPokemon(new Rattata(38));
+		zoo.addPokemon(new Rattata(47));
+
+		zoo.addPokemon(new Jigglypuff(6));
+		zoo.addPokemon(new Jigglypuff(12));
+		zoo.addPokemon(new Jigglypuff(23));
+		zoo.addPokemon(new Jigglypuff(27));
+		zoo.addPokemon(new Jigglypuff(35));
+		zoo.addPokemon(new Jigglypuff(43));
+		zoo.addPokemon(new Jigglypuff(52));
+		zoo.addPokemon(new Jigglypuff(60));
+
+		zoo.addPokemon(new Mewtwo(70));
+		zoo.addPokemon(new Mewtwo(100));
 
 		System.out.println("Welcome to the PokeZoo!");
 		System.out.println();
@@ -39,20 +69,28 @@ public class PokemonApp {
 						System.out.println("Which cage would you like to visit?");
 						System.out.println("1: Domesticated");
 						System.out.println("2: Rattata");
+						System.out.println("3: Jigglypuff");
+						System.out.println("4: Mewtwo");
 	
 						loop2: while (true) {
 							String choice2 = Const.scan.nextLine();
 							System.out.println();
 							switch(choice2) {
-							case "1":
-								zoo.displayAllDomesticated();
-								break loop2;
-							case "2":
-								zoo.displayAllRattata();
-								break loop2;
-							default:
-								System.out.println("Please choose 1–2: ");
-							}
+								case "1":
+									zoo.displayAllDomesticated();
+									break loop2;
+								case "2":
+									zoo.displayAllRattata();
+									break loop2;
+								case "3":
+									zoo.displayAllJigglypuff();
+									break loop2;
+								case "4":
+									zoo.displayAllMewtwo();
+									break loop2;
+								default:
+									System.out.println("Please choose 1–4: ");
+								}
 						}
 	
 						break loop;
@@ -80,7 +118,7 @@ public class PokemonApp {
 						System.out.println("Which pokemon would you like to train?");
 						Domesticated pokemon = choosePokemon(zoo);
 						System.out.println();
-						pokemon.train(zoo.getRandWild());
+						pokemon.train(zoo.getRandWild(pokemon));
 						break loop;
 					}
 					case "5": {
