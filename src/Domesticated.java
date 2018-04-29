@@ -68,6 +68,10 @@ public abstract class Domesticated extends Pokemon {
 		restoreHP();
 		opponent.restoreHP();
 
+		if (won != 2) {
+			System.out.println();
+		}
+
 		if (won == 1) {
 			System.out.println(getNickname() + " won!");
 		}

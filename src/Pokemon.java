@@ -227,6 +227,7 @@ public abstract class Pokemon {
 						}
 						else {
 							System.out.println(you.nickname + " couldn't escape!");
+							System.out.println();
 							escapes++;
 							run = true;
 							break loop;
