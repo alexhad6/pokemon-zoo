@@ -82,18 +82,14 @@ public abstract class Domesticated extends Pokemon {
 
 	public final void tick() {
 		hunger += Const.rand.nextInt(6);
-
-		if (hunger > 25) {
-			System.out.println(getNickname() + " is a little hungry.");
-		}
-		else if (hunger > 50) {
+		if (hunger >= 50 && hunger < 75) {
 			System.out.println(getNickname() + " is getting hungry.");
 		}
-		else if (hunger > 75) {
-			System.out.println(getNickname() + " is getting very hungry.");
+		else if (hunger >= 75 && hunger < 100) {
+			System.out.println(getNickname() + " is very hungry.");
 		}
-		else if (hunger > 100) {
-			System.out.println(getNickname() + " fainted due to hunger!");
+		else if (hunger >= 100) {
+			System.out.println("\n"+getNickname() + " fainted due to hunger!");
 			System.out.println();
 			System.out.println(getNickname() + " was rushed to the Pokecenter and is all better now! Please remember to feed your Pokemon!");
 			hunger = 0;
