@@ -19,7 +19,6 @@ public abstract class Domesticated extends Pokemon {
 
 	public final void feed() {
 		hunger = 0;
-		System.out.println(getNickname() + " ate and is now happy and full.");
 	}
 
 	public void train(Wild opponent) {

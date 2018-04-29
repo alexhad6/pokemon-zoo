@@ -132,7 +132,7 @@ public class PokemonApp {
 					}
 					case "6": {
 						zoo.feed();
-						System.out.println("Your Pokemon were fed!");
+						System.out.println("Your Pokemon ate and are now happy and full.");
 						break loop;
 					}
 					case "7": {
