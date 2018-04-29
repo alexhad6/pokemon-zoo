@@ -34,7 +34,7 @@ public abstract class Domesticated extends Pokemon {
 		if (won == 1) {
 			System.out.println(getNickname() + " won!");
 
-			int XPGain = (int) Math.floor((opponent.getBaseXP() * opponent.getLevel()) / 7.0);
+			int XPGain = (int) Math.floor((experienceAtLevel(getLevel() + 1) - experienceAtLevel(getLevel())) / (2 + (Math.random() / 2))); //actual equation: (int) Math.floor((opponent.getBaseXP() * opponent.getLevel()) / 7.0);
 			experience += XPGain;
 			System.out.print(getNickname() + " gained " + XPGain + " experience points!");
 
