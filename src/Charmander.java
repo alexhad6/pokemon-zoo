@@ -1,11 +1,11 @@
-public final class Charmander extends Domesticated implements Fire{
+public final class Charmander extends Domesticated implements Fire {
 
 	public Charmander(String nickname, int level) {
 		super("Charmander", nickname, 24, 18.7, Const.FIRE, level, new int[] {39, 52, 43, 60, 50, 65}, Const.TACKLE, EMBER);
 	}
 
-	public void tick() {
-		while(getExperience() >= experienceAtLevel(getLevel())) {
+	public void levelTick() {
+		while(leveledUp()) {
 			levelUp();
 
 			if (getLevel() >= 16) {
@@ -13,7 +13,7 @@ public final class Charmander extends Domesticated implements Fire{
 			}
 
 			if (getLevel() >= 36) {
-				evolve("Charizard", 67, 199.5, new int[] {78, 84, 78, 109, 85, 100}, Const.PETAL_BLIZZARD, Const.SOLAR_BEAM);
+				evolve("Charizard", 67, 199.5, new int[] {78, 84, 78, 109, 85, 100}, HEAT_WAVE, FLARE_BLITZ);
 			}
 		}
 	}

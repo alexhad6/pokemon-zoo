@@ -4,8 +4,8 @@ public final class Squirtle extends Domesticated implements Water{
 		super("Squirtle", nickname, 20, 19.8, Const.WATER, level, new int[] {44, 48, 65, 50, 64, 43}, Const.TACKLE, WATER_GUN);
 	}
 
-	public void tick() {
-		while(getExperience() >= experienceAtLevel(getLevel())) {
+	public void levelTick() {
+		while(leveledUp()) {
 			levelUp();
 
 			if (getLevel() >= 16) {

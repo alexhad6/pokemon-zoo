@@ -1,4 +1,3 @@
-
 public class Type {
 
 	private final String name;

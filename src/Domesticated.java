@@ -14,7 +14,7 @@ public abstract class Domesticated extends Pokemon {
 	}
 
 	public final double experienceAtLevel(final int level) {
-		return (6/5)*Math.pow(level, 3) - 15*Math.pow(level, 2) + 100*level - 140;
+		return 1.2 * Math.pow(level, 3) - 15*Math.pow(level, 2) + 100 * level - 140;
 	}
 
 	public final void feed() {
@@ -24,27 +24,37 @@ public abstract class Domesticated extends Pokemon {
 
 	public void train(Wild opponent) {
 		System.out.println("A wild " + opponent.getName() + " appeared!");
-		boolean won = Pokemon.battle(this, opponent);
+		int won = Pokemon.battle(this, opponent);
 
 		opponent.restoreHP();
 
-		System.out.println();
+		if (won != 2) {
+			System.out.println();
+		}
 
-		if (won) {
+		if (won == 1) {
 			System.out.println(getNickname() + " won!");
 
 			int XPGain = (int) Math.floor((opponent.getBaseXP() * opponent.getLevel()) / 7.0);
 			experience += XPGain;
-			System.out.println(getNickname() + " gained " + XPGain + " experience! [" + (experienceAtLevel(getLevel() + 1) - experience) + " to until level " + (getLevel() + 1) + ".]");
+			System.out.print(getNickname() + " gained " + XPGain + " experience points!");
 
 			int stat = opponent.getEVType();
 			int inc = opponent.getEV();
-
 			if (totalEVs() < 510 + inc && getEV(stat) < 255 + inc) {
 				increaseEV(stat, inc);
 			}
+
+			if (leveledUp()) {
+				System.out.println();
+				System.out.println();
+				levelTick();
+			}
+			else {
+				System.out.println(" [" + (int) (experienceAtLevel(getLevel() + 1) - experience) + " until level " + (getLevel() + 1) + "]");
+			}
 		}
-		else {
+		else if (won == 0) {
 			System.out.println(getNickname() + " fainted...");
 			System.out.println();
 			System.out.println(getNickname() + " was rushed to the Pokecenter and is all better now!");
@@ -53,20 +63,24 @@ public abstract class Domesticated extends Pokemon {
 	}
 
 	public void practice(Domesticated opponent) {
-		boolean won = Pokemon.battle(this, opponent);
+		int won = Pokemon.battle(this, opponent);
 
 		restoreHP();
 		opponent.restoreHP();
 
-		if (won) {
+		if (won != 2) {
+			System.out.println();
+		}
+
+		if (won == 1) {
 			System.out.println(getNickname() + " won!");
 		}
-		else {
+		else if (won == 0) {
 			System.out.println(getNickname() + " lost. Try again next time!");
 		}
 	}
 
-	public void tick() {
+	public final void tick() {
 		hunger += Const.rand.nextInt(6);
 
 		if (hunger > 25) {
@@ -85,6 +99,12 @@ public abstract class Domesticated extends Pokemon {
 			hunger = 0;
 		}
 	}
+
+	public boolean leveledUp() {
+		return (getExperience() >= experienceAtLevel(getLevel() + 1)) && (getLevel() < 100);
+	}
+
+	public abstract void levelTick();
 
 	public final String toString() {
 		return getNickname() + "  (" + getName() + ") Lv" + getLevel() + " [HP " + showHP() + "]";
