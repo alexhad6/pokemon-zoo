@@ -96,7 +96,7 @@ public class PokemonApp {
 					break loop;
 				}
 				case "2": {
-					System.out.println("Which pokemon's stats would you like to check?");
+					System.out.println("Which Pokemon's stats would you like to check?");
 					choosePokemon(zoo).displayAllInfo();
 					break loop;
 				}
@@ -110,21 +110,21 @@ public class PokemonApp {
 						pokemon.rename(newName);
 					}
 					else {
-						System.out.println("Sorry, you can only rename domesticated pokemon.");
+						System.out.println("Sorry, you can only rename domesticated Pokemon.");
 					}
 					break loop;
 				}
 				case "4": {
-					System.out.println("Which pokemon would you like to train?");
+					System.out.println("Which Pokemon would you like to train?");
 					Domesticated pokemon = choosePokemon(zoo);
 					System.out.println();
 					pokemon.train(zoo.getRandWild(pokemon));
 					break loop;
 				}
 				case "5": {
-					System.out.println("Which pokemon would you like to use?");
+					System.out.println("Which Pokemon would you like to use?");
 					Domesticated pokemon = choosePokemon(zoo);
-					System.out.println("Which pokemon would you like to practice against?");
+					System.out.println("Which Pokemon would you like to practice against?");
 					Domesticated opponent = choosePokemon(zoo);
 					pokemon.practice(opponent);
 
@@ -132,11 +132,11 @@ public class PokemonApp {
 				}
 				case "6": {
 					zoo.feed();
-					System.out.println("Your pokemon were fed!");
+					System.out.println("Your Pokemon were fed!");
 					break loop;
 				}
 				case "7": {
-					System.out.println("Which pokemon would you like to send to the Pokecenter?");
+					System.out.println("Which Pokemon would you like to send to the Pokecenter?");
 					Domesticated pokemon = choosePokemon(zoo);
 					pokemon.restoreHP();
 					System.out.println(pokemon.getNickname() + "'s HP was restored!");
