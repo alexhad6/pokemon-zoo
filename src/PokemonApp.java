@@ -10,7 +10,9 @@ public class PokemonApp {
 		zoo.addPokemon(new Bulbasaur("Fred", 10));
 		zoo.addPokemon(new Bulbasaur("Bob", 3));
 		zoo.addPokemon(new Bulbasaur("Zarg", 1));
-		zoo.addPokemon(new Rattata(10));
+		//zoo.addPokemon(new Rattata(10));
+		zoo.addPokemon(new Mewtwo(30));
+		zoo.addPokemon(new Jigglypuff(15));
 
 
 		System.out.println("Welcome to the PokeZoo!");
