@@ -37,5 +37,8 @@ public class Const {
 	
 	public static final Move DRAGON_CLAW = new Move("Dragon Claw", 1.00, DRAGON, PHYSICAL, 80);
 	public static final Move FLARE_BLITZ = new Move("Flare Blitz", 1.00, FIRE, PHYSICAL, 120);
+	
+	public static final Move PSYCHO_CUT = new Move("Psycho Cut", 1.00, PSYCHIC, PHYSICAL, 70);
+	public static final Move FUTURE_SIGHT = new Move("Future Sight", 1.00, PSYCHIC, SPECIAL, 120);
 
 }
